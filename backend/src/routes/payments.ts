@@ -77,7 +77,7 @@ router.post('/', async (req: Request, res: Response) => {
     }
 
     await client.query(
-      `UPDATE orders SET payment_status = $1, status = CASE WHEN $1 = 'paid' THEN 'completed' ELSE status END, order_completed_at = CASE WHEN $1 = 'paid' THEN $2::timestamp ELSE order_completed_at END, order_updated_at = $2 WHERE id = $3`,
+      `UPDATE orders SET payment_status = $1::varchar, status = CASE WHEN $1::varchar = 'paid' THEN 'completed' ELSE status END, order_completed_at = CASE WHEN $1::varchar = 'paid' THEN $2::timestamp ELSE order_completed_at END, order_updated_at = $2::timestamp WHERE id = $3`,
       [paymentStatus, now, order_id]
     );
 
